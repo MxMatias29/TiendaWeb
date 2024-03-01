@@ -89,7 +89,6 @@ CREATE TABLE productos (
     categoria_id INT,
     proveedor_id INT,
     estado_id INT,
-    foto VARCHAR(200),
     stock INT NOT NULL,
     stock_minimo INT NOT NULL,
     precio_neto DECIMAL(10 , 2 ) NOT NULL,
@@ -111,7 +110,9 @@ CREATE TRIGGER generar_prod_cod BEFORE INSERT ON productos
 FOR EACH ROW
 BEGIN
     DECLARE ultimo_id INT;
+    -- Obtener el último ID insertado en la tabla productos
     SELECT MAX(id_productos) INTO ultimo_id FROM productos;
+    -- Establecer el código del producto
     IF ultimo_id IS NULL THEN
         SET NEW.codigo = 'PD001';
     ELSE
@@ -120,14 +121,14 @@ BEGIN
 END;
 //
 
-INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, foto, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
-VALUES ('Mayonesa Alacena 190g', 'Mayonesa Rica', 1, 1, 1, 1, 'imagen.jpg', 10, 5, 4.00, 5.60, '1234567890', 1);
-INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, foto, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
-VALUES ('Tallarin Don victorio', 'Tallarin de 1KG', 1, 4, 5, 1, 'imagen.jpg', 10, 5, 4.00, 5.60, '1234567890', 1);
-INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, foto, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
-VALUES ('Leche Ideal', 'Leche Cremosita', 1, 1, 1, 1, 'imagen.jpg', 10, 5, 4.00, 5.60, '1234567890', 1);
-INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, foto, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
-VALUES ('Detergente Ariel', 'Detergente de 460G', 1, 1, 1, 1, 'imagen.jpg', 10, 5, 4.00, 5.60, '1234567890', 1);
-INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, foto, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
-VALUES ('Gaseosa 1L', 'Coca Cola ', 1, 1, 1, 1, 'imagen.jpg', 10, 5, 4.00, 5.60, '1234567890', 1);
+INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
+VALUES ('Mayonesa Alacena 190g', 'Mayonesa Rica', 1, 1, 1, 1, 10, 5, 4.00, 5.60, '1234567890', 1);
+INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
+VALUES ('Tallarin Don victorio', 'Tallarin de 1KG', 1, 4, 5, 1, 10, 5, 4.00, 5.60, '1234567890', 1);
+INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
+VALUES ('Leche Ideal', 'Leche Cremosita', 1, 1, 1, 1, 10, 5, 4.00, 5.60, '1234567890', 1);
+INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
+VALUES ('Detergente Ariel', 'Detergente de 460G', 1, 1, 1, 1, 10, 5, 4.00, 5.60, '1234567890', 1);
+INSERT INTO productos (nombre, descripcion, marca_id, categoria_id, proveedor_id, estado_id, stock, stock_minimo, precio_neto, precio_bruto, codigobarra, actividad)
+VALUES ('Gaseosa 1L', 'Coca Cola ', 1, 1, 1, 1, 10, 5, 4.00, 5.60, '1234567890', 1);
 select * from productos;
