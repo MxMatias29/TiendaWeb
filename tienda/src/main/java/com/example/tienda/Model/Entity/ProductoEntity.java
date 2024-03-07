@@ -44,12 +44,12 @@ public class ProductoEntity implements Serializable {
 
     @Column(name = "nombre")
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 100, min = 3, message = "Nombre: 3 - 100 caracteres" )
     private String nombre;
 
     @Column(name = "descripcion")
     @NotEmpty
-    @Size(max = 200)
+    @Size(max = 200, min = 5, message = "Descripcion: 5 - 200 caracteres")
     private String descripcion;
 
     @ManyToOne
@@ -76,13 +76,9 @@ public class ProductoEntity implements Serializable {
     @NotNull
     private Integer stock_minimo;
 
-    @Column(name = "precio_neto")
+    @Column(name = "precio")
     @NotNull
-    private float precio_neto;
-
-    @Column(name = "precio_bruto")
-    @NotNull
-    private float precio_bruto;
+    private double precio;
 
     @Column(name = "codigobarra")
     @NotEmpty
@@ -90,4 +86,6 @@ public class ProductoEntity implements Serializable {
 
     @Column(name = "actividad")
     private Boolean actividad;
+
+    
 }

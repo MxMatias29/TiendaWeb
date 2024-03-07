@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +33,8 @@ public class CategoriaEntity implements Serializable {
 
     @Column(name = "nombre")
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 50, min = 3, message = " Nombre: 3 - 50 caracteres")
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "No se permite números, caracteres especiales")
     private String nombre;
 
     @Column(name = "actividad")

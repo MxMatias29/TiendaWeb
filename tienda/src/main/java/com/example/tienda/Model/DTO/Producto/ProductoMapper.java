@@ -12,7 +12,7 @@ public interface ProductoMapper {
   
     @Mapping(source = "codigo", target = "codigo")
     @Mapping(source = "nombre", target = "nombre")
-    @Mapping(source = "precio_bruto", target = "precio")
+    @Mapping(source = "precio", target = "precio")
     @Mapping(source = "stock", target = "stock")
     ProductoDTO EntityToDto(ProductoEntity producto); 
 }

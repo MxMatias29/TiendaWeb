@@ -39,24 +39,25 @@ public class ProveedorEntity implements Serializable {
     @Column(name = "codigo")
     private String codigo;
 
-    @Column(name = "ruc", unique = true)
+    @Column(name = "ruc", unique = true, nullable = false)
     @NotEmpty
     @Size(min = 11, max = 11)
     private String ruc;
 
     @Column(name = "nombre")
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 100, min = 3, message = "Nombre: 3 - 100 caracteres")
     private String nombre;
 
     @Column(name = "direccion")
     @NotEmpty
-    @Size(max = 100)
+    @Size(max = 100, min = 3, message = "Direccion: 3 - 100 caracteres")
     private String direccion;
 
     @Column(name = "telefono")
+    @Size(max = 9, min = 9, message = "Numero: 9 digitos")
     @NotEmpty
-    @Pattern(regexp = "(\\+51)[0-9]{9}")
+    @Pattern(regexp = "(\\d{9}$", message = "Solo números")
     private String telefono;
 
     @Column(name = "correo")
