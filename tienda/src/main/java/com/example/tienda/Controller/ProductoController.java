@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -51,31 +52,33 @@ public class ProductoController {
     @Autowired
     private IProducto service;
 
+    @PreAuthorize("hasAuthority('READ_ALL_PRODUCTS_ADMIN')")
     @GetMapping("/producto")
     public ResponseEntity<?> getAllProductoPartial() {
         try {
             List<ProductoDTO> listaProducto = service.findAll();
-
+            
             if (listaProducto.isEmpty()) {
                 return new ResponseEntity<>(MessageResponse.builder()
-                        .message("No se encontraron Productos")
-                        .object(null)
-                        .build(), HttpStatus.NOT_FOUND);
+                .message("No se encontraron Productos")
+                .object(null)
+                .build(), HttpStatus.NOT_FOUND);
             } else {
                 return new ResponseEntity<>(MessageResponse.builder()
-                        .message("Lista de Productos")
-                        .object(listaProducto)
-                        .build(), HttpStatus.OK);
+                .message("Lista de Productos")
+                .object(listaProducto)
+                .build(), HttpStatus.OK);
             }
         } catch (DataAccessException e) {
             return new ResponseEntity<>(MessageResponse.builder()
-                    .message(e.getMessage())
-                    .object(null)
-                    .build(), HttpStatus.INTERNAL_SERVER_ERROR);
+            .message(e.getMessage())
+            .object(null)
+            .build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        
     }
-
+    
+    @PreAuthorize("hasAuthority('SAVE_ONE_PRODUCT')")
     @GetMapping("/producto/activo")
     public ResponseEntity<?> getAllProductoPartialActive() {
         try {

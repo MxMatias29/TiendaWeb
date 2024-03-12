@@ -30,11 +30,11 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "productos")
+@Table(name = "producto")
 public class ProductoEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "id_productos")
+    @Column(name = "id_producto")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_productos;
