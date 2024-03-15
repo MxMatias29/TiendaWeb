@@ -26,6 +26,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -69,6 +70,7 @@ public class ProveedorController {
     @Autowired
     private IProveedor service;
 
+    @PreAuthorize("hasAuthority('READ_ALL_PROVEEDOR')")
     @GetMapping("/proveedor")
     public ResponseEntity<?> getAllProveedorPartial() {
         try {
@@ -94,6 +96,7 @@ public class ProveedorController {
 
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_ACTIVE_PROVEEDOR')")
     @GetMapping("/proveedor/activo")
     public ResponseEntity<?> getAllProveedorPartialActive() {
         try {
@@ -118,6 +121,7 @@ public class ProveedorController {
 
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_INACTIVE_PROVEEDOR')")
     @GetMapping("/proveedor/inactivo")
     public ResponseEntity<?> getAllProveedorPartialInactive() {
         try {
@@ -141,6 +145,7 @@ public class ProveedorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SEARCH_ID_PROVEEDOR')")
     @GetMapping("/proveedor/{id}")
     public ResponseEntity<?> getFindByIdProveedor(@PathVariable Integer id) {
         try {
@@ -165,6 +170,7 @@ public class ProveedorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SEARCH_NAME_PROVEEDOR')")
     @GetMapping("/proveedor/buscar/{nombre}")
     public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         try {
@@ -189,6 +195,8 @@ public class ProveedorController {
         }
     }
 
+
+    @PreAuthorize("hasAuthority('SAVE_PROVEEDOR')")
     @PostMapping("/proveedor")
     public ResponseEntity<?> saveProveedor(@Valid @RequestBody ProveedorEntity proveedor) {
         ProveedorEntity saveProveedor = null;
@@ -206,6 +214,7 @@ public class ProveedorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('EDIT_PROVEEDOR')")
     @PutMapping("/proveedor/{id}")
     public ResponseEntity<?> updateProveedor(@Valid @RequestBody ProveedorEntity proveedor, @PathVariable Integer id) {
         ProveedorEntity updateProveedor = null;
@@ -232,6 +241,7 @@ public class ProveedorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('CHANGE_ACTIVIDAD_PROVEEDOR')")
     @PatchMapping("/proveedor/{id_provider}")
     public ResponseEntity<?> changeOfStatus(@PathVariable Integer id_provider) {
         try {
@@ -256,6 +266,7 @@ public class ProveedorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE_PROVEEDOR')")
     @DeleteMapping("/proveedor/{id}")
     public ResponseEntity<?> deleteProveeedor(@PathVariable Integer id) {
         try {
@@ -280,6 +291,7 @@ public class ProveedorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('REPORT_PDF_PROVEDOR')")
     @GetMapping("/proveedor/reporte/pdf")
     public ResponseEntity<?> generarReportePdf() {
         try {
@@ -335,6 +347,7 @@ public class ProveedorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('REPORT_EXCEL_PROVEEDOR')")
     @GetMapping("/proveedor/reporte/excel")
     public ResponseEntity<byte[]> generarReporteExcel() throws IOException {
         try {

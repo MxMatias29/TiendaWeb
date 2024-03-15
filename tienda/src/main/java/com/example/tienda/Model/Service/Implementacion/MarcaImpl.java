@@ -43,6 +43,7 @@ public class MarcaImpl implements IMarca {
     @Transactional
     @Override
     public MarcaEntity save(MarcaEntity entity) {
+        entity.setActividad(true);
         return repository.save(entity);
     }
     

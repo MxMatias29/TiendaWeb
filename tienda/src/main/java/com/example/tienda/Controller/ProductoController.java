@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.tienda.Model.DTO.Producto.ProductClienteDTO;
 import com.example.tienda.Model.DTO.Producto.ProductoDTO;
 import com.example.tienda.Model.Entity.ProductoEntity;
 import com.example.tienda.Model.Service.IProducto;
@@ -77,8 +78,34 @@ public class ProductoController {
         }
         
     }
+
+    @PreAuthorize("permitAll")
+    @GetMapping("/home")
+    public ResponseEntity<?> getAllTienda() {
+        try {
+            List<ProductClienteDTO> listaProducto = service.findAllCliente();
+
+            if (listaProducto.isEmpty()) {
+                return new ResponseEntity<>(MessageResponse.builder()
+                        .message("No se encontraron Productos")
+                        .object(null)
+                        .build(), HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(MessageResponse.builder()
+                        .message("Lista de Productos")
+                        .object(listaProducto)
+                        .build(), HttpStatus.OK);
+            }
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(MessageResponse.builder()
+                    .message(e.getMessage())
+                    .object(null)
+                    .build(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
     
-    @PreAuthorize("hasAuthority('SAVE_ONE_PRODUCT')")
+    @PreAuthorize("hasAuthority('READ_ALL_ACTIVES_ADMIN')")
     @GetMapping("/producto/activo")
     public ResponseEntity<?> getAllProductoPartialActive() {
         try {
@@ -103,6 +130,7 @@ public class ProductoController {
 
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_INACTIVES_ADMIN')")
     @GetMapping("/producto/inactivo")
     public ResponseEntity<?> getAllProductoPartialInactive() {
         try {
@@ -126,6 +154,7 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SEARCH_PRODUCT_ID_ADMIN')")
     @GetMapping("/producto/{id}")
     public ResponseEntity<?> getFindByIdProducto(@PathVariable Integer id) {
         try {
@@ -150,10 +179,11 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SEARCH_PRODUCT_NAME_ADMIN')")
     @GetMapping("/producto/nombre/{nombre}")
     public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         try {
-            List<ProductoEntity> lista = service.buscarPorNombre(nombre);
+            List<ProductoDTO> lista = service.buscarPorNombre(nombre);
 
             if (lista.isEmpty()) {
                 return new ResponseEntity<>(MessageResponse.builder()
@@ -174,10 +204,11 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('permitAll')")
     @GetMapping("/producto/marca/{marca}")
     public ResponseEntity<?> buscarPorMarca(@PathVariable String marca) {
         try {
-            List<ProductoEntity> lista = service.buscarPorNombreMarca(marca);
+            List<ProductClienteDTO> lista = service.buscarPorNombreMarca(marca);
 
             if (lista.isEmpty()) {
                 return new ResponseEntity<>(MessageResponse.builder()
@@ -198,10 +229,11 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('permitAll')")
     @GetMapping("/producto/categoria/{categoria}")
     public ResponseEntity<?> buscarPorNombreCategoria(@PathVariable String categoria) {
         try {
-            List<ProductoEntity> lista = service.buscarPorNombreCategoria(categoria);
+            List<ProductClienteDTO> lista = service.buscarPorNombreCategoria(categoria);
 
             if (lista.isEmpty()) {
                 return new ResponseEntity<>(MessageResponse.builder()
@@ -222,6 +254,32 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('permitAll')")
+    @GetMapping("/producto/barra/{search}")
+    public ResponseEntity<?> barraBusqueda(@PathVariable String search) {
+        try {
+            List<ProductClienteDTO> lista = service.barraBusqueda(search);
+
+            if (lista.isEmpty()) {
+                return new ResponseEntity<>(MessageResponse.builder()
+                        .message("No hay registros")
+                        .object(null)
+                        .build(), HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(MessageResponse.builder()
+                        .message("Resultado de la busqueda")
+                        .object(lista)
+                        .build(), HttpStatus.OK);
+            }
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(MessageResponse.builder()
+                    .message(e.getMessage())
+                    .object(null)
+                    .build(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("hasAuthority('SAVE_ONE_PRODUCT')")
     @PostMapping("/producto")
     public ResponseEntity<?> saveProducto(@Valid @RequestBody ProductoEntity producto) {
         ProductoEntity saveProducto = null;
@@ -239,6 +297,7 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('EDIT_ONE_PRODUCT')")
     @PutMapping("/producto/{id}")
     public ResponseEntity<?> updateProducto(@Valid @RequestBody ProductoEntity producto, @PathVariable Integer id) {
         ProductoEntity updateProducto = null;
@@ -265,6 +324,7 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('CHANGE_ACTIVIDAD_PRODUCT')")
     @PatchMapping("/producto/{id_producto}")
     public ResponseEntity<?> changeOfStatus(@PathVariable Integer id_producto) {
         try {
@@ -289,6 +349,7 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
     @DeleteMapping("/producto/{id}")
     public ResponseEntity<?> deleteProducto(@PathVariable Integer id) {
         try {
@@ -313,6 +374,7 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('REPORT_PDF_PRODUCT')")
      @GetMapping("/producto/reporte/pdf")
     public ResponseEntity<?> generarReportePdf() {
         try {
@@ -368,6 +430,7 @@ public class ProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('REPORT_EXCEL_PRODUCT')")
     @GetMapping("/producto/reporte/excel")
     public ResponseEntity<byte[]> generarReporteExcel() throws IOException {
         try {

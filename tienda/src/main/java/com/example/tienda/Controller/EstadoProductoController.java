@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,6 +29,7 @@ public class EstadoProductoController {
     @Autowired
     private IEstadoProducto service;
 
+    @PreAuthorize("hasAuthority('READ_ALL_ESTADO_PRODUCTO')")
     @GetMapping("/estadoproducto")
     public ResponseEntity<?> findAll() {
         try {
@@ -51,6 +53,7 @@ public class EstadoProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_ACTIVE_ESTADO_PRODUCTO')")
     @GetMapping("/estadoproducto/activo")
     public ResponseEntity<?> findAllActivos() {
         try {
@@ -74,6 +77,7 @@ public class EstadoProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_INACTIVE_ESTADO_PRODUCTO')")
     @GetMapping("/estadoproducto/inactivo")
     public ResponseEntity<?> findAllInactivos() {
         try {
@@ -97,6 +101,7 @@ public class EstadoProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SEARCH_ESTADO_PRODUCTO_ID')")
     @GetMapping("/estadoproducto/{id}")
     public ResponseEntity<?> findByIdEstado(@PathVariable Integer id) {
         try {
@@ -120,6 +125,7 @@ public class EstadoProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SAVE_ESTADO_PRODUCTO')")
     @PostMapping("/estadoproducto")
     public ResponseEntity<?> saveEstado(@Valid @RequestBody EstadoProductoEntity estado) {
         EstadoProductoEntity saveEntity = null;
@@ -137,6 +143,7 @@ public class EstadoProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('EDIT_ESTADO_PRODUCTO')")
     @PutMapping("/estadoproducto/{id}")
     public ResponseEntity<?> UpdateEstado(@Valid @RequestBody EstadoProductoEntity estado, @PathVariable Integer id) {
         EstadoProductoEntity updateEntity = null;
@@ -163,6 +170,7 @@ public class EstadoProductoController {
 
     }
 
+    @PreAuthorize("hasAuthority('CHANGE_ACTIVIDAD_ESTADO_PRODUCTO')")
     @PatchMapping("/estadoproducto/{id}")
     public ResponseEntity<?> changeOfState(@PathVariable Integer id) {
         try {
@@ -170,7 +178,7 @@ public class EstadoProductoController {
             if (entity != null) {
                 EstadoProductoEntity change = service.changeofStatus(entity);
                 return new ResponseEntity<>(MessageResponse.builder()
-                        .message("Actualizado Correctamente")
+                        .message("Estado Actualizado")
                         .object(change)
                         .build(), HttpStatus.CREATED);
             } else {
@@ -187,6 +195,7 @@ public class EstadoProductoController {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE_ESTADO_PRODUCTO')")
     @DeleteMapping("/estadoproducto/{id}")
     public ResponseEntity<?> deleteEntity(@PathVariable Integer id) {
         try {
@@ -194,7 +203,7 @@ public class EstadoProductoController {
             if (entity != null) {
                 service.delete(entity);
                 return new ResponseEntity<>(MessageResponse.builder()
-                        .message("Actualizado Correctamente")
+                        .message("Eliminado Correctamente")
                         .object(null)
                         .build(), HttpStatus.NO_CONTENT);
             } else {

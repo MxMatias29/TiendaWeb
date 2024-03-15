@@ -64,6 +64,7 @@ public class ProveedorImpl implements IProveedor {
     @Transactional
     @Override
     public ProveedorEntity save(ProveedorEntity proveedor) {
+        proveedor.setActividad(true);
         return repository.save(proveedor);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,6 +30,7 @@ public class CategoriaController {
     @Autowired
     private ICategoria service;
 
+    @PreAuthorize("hasAuthority('READ_ALL_CATEGORY')")
     @GetMapping("/categoria")
     public ResponseEntity<?> findAll() {
         try {
@@ -52,6 +54,7 @@ public class CategoriaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_ACTIVE_CATEGORY')")
     @GetMapping("/categoria/activo")
     public ResponseEntity<?> findAllActive() {
         try {
@@ -75,6 +78,7 @@ public class CategoriaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_INACTIVE_CATEGORY')")
     @GetMapping("/categoria/inactivo")
     public ResponseEntity<?> findAllFalse() {
         try {
@@ -98,6 +102,7 @@ public class CategoriaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SEARCH_CATEGORY_ID')")
     @GetMapping("/categoria/{id}")
     public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
@@ -121,6 +126,7 @@ public class CategoriaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SAVE_CATEGORY')")
     @PostMapping("/categoria")
     public ResponseEntity<?> saveCategory(@Valid @RequestBody CategoriaEntity categoryEntity) {
         CategoriaEntity category = null;
@@ -138,6 +144,7 @@ public class CategoriaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('EDIT_CATEGORY')")
     @PutMapping("/categoria/{id}")
     public ResponseEntity<?> updateCategory(@Valid @PathVariable Integer id,
             @RequestBody CategoriaEntity categoryEntity) {
@@ -164,6 +171,7 @@ public class CategoriaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('CHANGE_ACTIVIDAD_CATEGORY')")
     @PatchMapping("/categoria/{id}")
     public ResponseEntity<?> changeOfState(@PathVariable Integer id) {
         try {
@@ -188,6 +196,7 @@ public class CategoriaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE_CATEGORY')")
     @DeleteMapping("/categoria/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Integer id) {
         try {

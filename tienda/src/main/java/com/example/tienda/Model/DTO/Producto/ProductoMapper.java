@@ -15,4 +15,6 @@ public interface ProductoMapper {
     @Mapping(source = "precio", target = "precio")
     @Mapping(source = "stock", target = "stock")
     ProductoDTO EntityToDto(ProductoEntity producto); 
+
+    ProductClienteDTO EntityToDtoCliente(ProductoEntity producto);
 }

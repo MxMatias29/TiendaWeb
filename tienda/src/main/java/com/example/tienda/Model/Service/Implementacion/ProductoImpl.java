@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.tienda.Model.DTO.Producto.ProductClienteDTO;
 import com.example.tienda.Model.DTO.Producto.ProductoDTO;
 import com.example.tienda.Model.DTO.Producto.ProductoMapper;
 import com.example.tienda.Model.Entity.ProductoEntity;
@@ -16,6 +17,7 @@ import com.example.tienda.Model.Service.IProducto;
 @Service
 public class ProductoImpl implements IProducto {
 
+   
     @Autowired
     private ProductoRepository repository;
 
@@ -64,6 +66,7 @@ public class ProductoImpl implements IProducto {
     @Transactional
     @Override
     public ProductoEntity save(ProductoEntity producto) {
+        producto.setActividad(true);
         return repository.save(producto);
     }
 
@@ -88,21 +91,66 @@ public class ProductoImpl implements IProducto {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductoEntity> buscarPorNombre(String nombre) {
-        return repository.findByNombreContainingIgnoreCase(nombre);
+    public List<ProductoDTO> buscarPorNombre(String nombre) {
+        List<ProductoEntity> products = (List<ProductoEntity>) repository.findByNombreContainingIgnoreCase(nombre);
+
+        List<ProductoDTO> productDTOs = products.stream().map(
+                producto -> ProductoMapper.mapper.EntityToDto(producto))
+                .collect(Collectors.toList());
+
+        return productDTOs;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductoEntity> buscarPorNombreMarca(String marca) {
-        return repository.findByMarcaNombreContainingIgnoreCase(marca);
+    public List<ProductClienteDTO> buscarPorNombreMarca(String marca) {
+        List<ProductoEntity> products = (List<ProductoEntity>) repository.findByMarcaNombreContainingIgnoreCase(marca);
+
+        List<ProductClienteDTO> productDTOs = products.stream().map(
+                producto -> ProductoMapper.mapper.EntityToDtoCliente(producto))
+                .collect(Collectors.toList());
+
+        return productDTOs;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductoEntity> buscarPorNombreCategoria(String categoria) {
-        return repository.findByCategoriaNombreContainingIgnoreCase(categoria);
+    public List<ProductClienteDTO> buscarPorNombreCategoria(String categoria) {
+        List<ProductoEntity> products = (List<ProductoEntity>) repository
+                .findByCategoriaNombreContainingIgnoreCase(categoria);
 
+        List<ProductClienteDTO> productDTOs = products.stream().map(
+                producto -> ProductoMapper.mapper.EntityToDtoCliente(producto))
+                .collect(Collectors.toList());
+
+        return productDTOs;
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ProductClienteDTO> findAllCliente() {
+
+        List<ProductoEntity> products = (List<ProductoEntity>) repository.findAll();
+
+        List<ProductClienteDTO> productDTOs = products.stream().map(
+                producto -> ProductoMapper.mapper.EntityToDtoCliente(producto))
+                .collect(Collectors.toList());
+
+        return productDTOs;
+    }
+
+    @Override
+    public List<ProductClienteDTO> barraBusqueda(String search) {
+        List<ProductoEntity> products = (List<ProductoEntity>) repository
+                .findByNombreContainingIgnoreCaseOrMarcaNombreContainingIgnoreCaseOrCategoriaNombreContainingIgnoreCase(
+                        search, search, search);
+
+        List<ProductClienteDTO> productDTOs = products.stream().map(
+                producto -> ProductoMapper.mapper.EntityToDtoCliente(producto))
+                .collect(Collectors.toList());
+
+        return productDTOs;
+    }
+
 
 }

@@ -2,11 +2,14 @@ package com.example.tienda.Model.Service;
 
 import java.util.List;
 
+import com.example.tienda.Model.DTO.Producto.ProductClienteDTO;
 import com.example.tienda.Model.DTO.Producto.ProductoDTO;
 import com.example.tienda.Model.Entity.ProductoEntity;
 
 public interface IProducto {
     List<ProductoDTO> findAll();
+
+    List<ProductClienteDTO> findAllCliente();
 
     List<ProductoDTO> findAllActive();
 
@@ -20,12 +23,15 @@ public interface IProducto {
 
     ProductoEntity changeofState(ProductoEntity producto);
 
-    List<ProductoEntity> buscarPorNombre(String nombre);
+    // ADMIN
 
-    List<ProductoEntity> buscarPorNombreMarca(String marca);
+    List<ProductoDTO> buscarPorNombre(String nombre);
 
-    List<ProductoEntity> buscarPorNombreCategoria(String categoria);
+    // Filtro - Barra Busqueda -> CLIENTE
+
+    List<ProductClienteDTO> buscarPorNombreMarca(String marca);
+
+    List<ProductClienteDTO> buscarPorNombreCategoria(String categoria);
+
+    List<ProductClienteDTO> barraBusqueda(String search);
 }
-
-
-

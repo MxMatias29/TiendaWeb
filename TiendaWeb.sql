@@ -39,7 +39,6 @@ CREATE TABLE proveedor (
 -- N + Ruc
 
 DELIMITER //
-
 CREATE TRIGGER generar_codigo_proveedor BEFORE INSERT ON proveedor
 FOR EACH ROW
 BEGIN
@@ -52,7 +51,6 @@ BEGIN
     SET NEW.codigo = codigo_generado;
 END;
 //
-
 DELIMITER ;
 
 
@@ -159,59 +157,13 @@ END;
 
 DELIMITER ;
 
-CREATE TABLE user_role (
-	user_id BIGINT,
-    role_id BIGINT,
-    FOREIGN KEY (user_id)
-        REFERENCES usuario (id_usuario),
-	FOREIGN KEY (role_id)
-        REFERENCES rol (role_id)
-);
 
-CREATE TABLE carrito (
-	cart_id BIGINT PRIMARY KEY AUTO_INCREMENT, 
-    total_precio DOUBLE,
-    user_id BIGINT,
-     FOREIGN KEY (user_id)
-        REFERENCES usuario (id_usuario)
-);
+INSERT INTO usuario (username, nombre, apellido, correo, dni,password, telefono, role, actividad) VALUES ("ADMIN", "Matias", "Cabrera", "matias.29.mayorga.10@gmail.com", 74882334,"$2a$10$2x/ngOVLDDm0XfLALgNr2.gpiDwGwFMI4NQapf549EqGRA1N40OIu", 954337770,"ADMINISTRADOR", true);
+INSERT INTO usuario (username, nombre, apellido, correo, dni,  password, telefono, role, actividad) VALUES ("USER", "Daniel", "Najarro", "najarroChaconD@gmail.com", 12345689 ,"$2a$10$zuJ6fwkJXvJ3l.cRwITr6ePWaEQd3K9UI8EQZH6AeZoCdLLKWdiY.",987654321 ,"CUSTOMER", true);
 
-CREATE TABLE carrito_detalle (
-	cart_item_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    producto_precio DOUBLE,
-    cantidad INT,
-    cart_id BIGINT,
-    producto_id INT,
-    FOREIGN KEY(cart_id)
-		REFERENCES carrito(cart_id),
-    FOREIGN KEY(producto_id)
-		REFERENCES producto(id_producto)
-);
+select * from carrito;
+select * from item_carrito;
+select * from producto;
+select * from usuario;
 
-CREATE TABLE orden (
-	orden_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    correo VARCHAR(255) NOT NULL,
-    orden_fecha DATE, 
-    orden_estado VARCHAR(255),
-    total_cantidad DOUBLE,
-    pago_id BIGINT,
-	FOREIGN KEY (pago_id)
-		REFERENCES pago (payment_id)
-);
 
-CREATE TABLE pago (
-	payment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    metodo_pay VARCHAR(255)
-);
-
-CREATE TABLE orden_item (
-	orden_item_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    producto_precio DOUBLE,
-    cantidad INT,
-    orden_id BIGINT,
-    producto_id INT,
-    FOREIGN KEY (orden_id)
-		REFERENCES orden(orden_id),
-	FOREIGN KEY (producto_id) 
-		REFERENCES producto (id_producto)
-);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,6 +30,7 @@ public class MarcaController {
     @Autowired
     private IMarca service;
 
+    @PreAuthorize("hasAuthority('READ_ALL_MARCA')")
     @GetMapping("/marca")
     public ResponseEntity<?> findAll() {
         try {
@@ -52,6 +54,7 @@ public class MarcaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_ACTIVE_MARCA')")
     @GetMapping("/marca/activo")
     public ResponseEntity<?> findAllActive() {
         try {
@@ -75,6 +78,7 @@ public class MarcaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_INACTIVE_MARCA')")
     @GetMapping("/marca/inactivo")
     public ResponseEntity<?> findAllFalse() {
         try {
@@ -98,6 +102,7 @@ public class MarcaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SEARCH_MARCA_ID')")
     @GetMapping("/marca/{id}")
     public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
@@ -121,6 +126,7 @@ public class MarcaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('SAVE_MARCA')")
     @PostMapping("/marca")
     public ResponseEntity<?> saveMarcas(@Valid @RequestBody MarcaEntity marcasEntity) {
         MarcaEntity marcas = null;
@@ -138,6 +144,7 @@ public class MarcaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('EDIT_MARCA')")
     @PutMapping("/marca/{id}")
     public ResponseEntity<?> updateMarcas(@Valid @PathVariable Integer id,
             @RequestBody MarcaEntity marcasEntity) {
@@ -164,6 +171,7 @@ public class MarcaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('CHANGE_ACTIVIDAD_MARCA')")
     @PatchMapping("/marca/{id}")
     public ResponseEntity<?> changeOfState(@PathVariable Integer id) {
         try {
@@ -188,6 +196,7 @@ public class MarcaController {
         }
     }
 
+    @PreAuthorize("hasAuthority('DELETE_MARCA')")
     @DeleteMapping("/marca/{id}")
     public ResponseEntity<?> deleteMarcas(@PathVariable Integer id) {
         try {

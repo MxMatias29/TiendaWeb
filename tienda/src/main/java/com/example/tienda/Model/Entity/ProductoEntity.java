@@ -15,19 +15,19 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+
+//Falta campo imagen - subir al servidor
 
 @Entity
 @Table(name = "producto")
@@ -46,6 +46,8 @@ public class ProductoEntity implements Serializable {
     @NotEmpty
     @Size(max = 100, min = 3, message = "Nombre: 3 - 100 caracteres" )
     private String nombre;
+
+    private String foto;
 
     @Column(name = "descripcion")
     @NotEmpty
@@ -85,7 +87,7 @@ public class ProductoEntity implements Serializable {
     private String codigobarra; 
 
     @Column(name = "actividad")
-    private Boolean actividad;
+    private Boolean actividad = true;
 
     
 }

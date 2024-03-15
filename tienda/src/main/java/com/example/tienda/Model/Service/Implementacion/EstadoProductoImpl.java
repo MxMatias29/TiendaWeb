@@ -43,6 +43,7 @@ public class EstadoProductoImpl implements IEstadoProducto {
     @Transactional
     @Override
     public EstadoProductoEntity save(EstadoProductoEntity estadoEntity) {
+        estadoEntity.setActividad(true);
         return repository.save(estadoEntity);
     }
     
