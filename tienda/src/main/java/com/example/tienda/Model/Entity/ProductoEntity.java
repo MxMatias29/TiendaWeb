@@ -27,7 +27,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 
-//Falta campo imagen - subir al servidor
+
 
 @Entity
 @Table(name = "producto")
